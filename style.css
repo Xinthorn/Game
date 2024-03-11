@@ -32,6 +32,34 @@ body, html {
   animation: moveObstacle 2s infinite linear;
 }
 
+/* Coins display */
+#coinCounter {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  color: #000;
+  font-size: 18px;
+  z-index: 1;
+}
+
+/* Progress bar container */
+#progressBarContainer {
+  position: fixed;
+  top: 50px;
+  left: 20px;
+  width: 200px;
+  height: 20px;
+  background-color: #eee;
+  z-index: 1;
+}
+
+/* Progress bar */
+#progressBar {
+  height: 100%;
+  width: 0%; /* Initial width */
+  background-color: #4CAF50;
+}
+
 @keyframes moveObstacle {
   0% { right: -50px; }
   100% { right: 100%; }
