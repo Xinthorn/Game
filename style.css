@@ -69,6 +69,15 @@ body, html {
   50% { bottom: 150px; }
 }
 
+.coin {
+  width: 30px; /* Coin size */
+  height: 30px; /* Coin size */
+  background-image: url('coin.png'); /* Path to your coin image */
+  background-size: cover;
+  position: absolute;
+  bottom: 100px; /* Adjust based on gameplay needs */
+}
+
 .jump-animation {
   animation: jump 0.9s ease;
 }
