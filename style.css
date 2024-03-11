@@ -77,6 +77,10 @@ body, html {
   0%, 100% { bottom: 0; }
   50% { bottom: 150px; }
 }
+@keyframes moveCoin {
+  from { left: 100%; }
+  to { left: -30px; }
+}
 
 .jump-animation {
   animation: jump 0.9s ease;
