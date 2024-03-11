@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let coinsCollected = 0;
     let gameSpeed = 2000; // Initial speed for obstacle movement in milliseconds
     let jumpHeight = 150; // Adjust based on the character's jump height
+    let level = 1; // Level counter
 
     function jump() {
         if (!player.classList.contains("jump-animation")) {
@@ -21,42 +22,59 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', jump);
 
     function createCoin() {
-    const coin = document.createElement('div');
-    coin.className = 'coin';
+        const coin = document.createElement('div');
+        coin.className = 'coin';
 
-    // Calculate the maximum height the coin can appear at
-    const maxCoinHeight = gameContainer.offsetHeight - jumpHeight - 30 - 10; // Subtract 10 pixels for a buffer above jump height
+        // Calculate the maximum height the coin can appear at
+        const maxCoinHeight = gameContainer.offsetHeight - jumpHeight - 30;
 
-    // Generate a random height for the coin within the allowed range
-    const coinHeight = jumpHeight + Math.random() * maxCoinHeight;
+        // Generate a random height for the coin within the allowed range
+        const coinHeight = jumpHeight + Math.random() * maxCoinHeight;
 
-    // Set the bottom position of the coin to this calculated height
-    coin.style.bottom = `${coinHeight}px`;
+        // Set the bottom position of the coin to this calculated height
+        coin.style.bottom = `${coinHeight}px`;
 
-    // Add animation to move the coin across the screen
-    coin.style.animation = `moveCoin ${gameSpeed / 1000}s linear`;
+        // Add animation to move the coin across the screen
+        coin.style.animation = `moveCoin ${gameSpeed / 1000}s linear`;
 
-    // Add event listener to remove the coin after it has moved twice through the gameplay area
-    let moves = 0;
-    coin.addEventListener('animationiteration', () => {
-        moves++;
-        if (moves >= 2) {
-            gameContainer.removeChild(coin);
-        }
-    });
+        // Add event listener to remove the coin after it has moved twice through the gameplay area
+        let moves = 0;
+        coin.addEventListener('animationiteration', () => {
+            moves++;
+            if (moves >= 2) {
+                gameContainer.removeChild(coin);
+            }
+        });
 
-    gameContainer.appendChild(coin);
-}
-
+        gameContainer.appendChild(coin);
+    }
 
     // Increase game speed over time
     function increaseGameSpeed() {
         if (gameSpeed > 1000) { // Prevents speed from becoming too fast
             gameSpeed -= 100; // Adjust as needed
             obstacle.style.animationDuration = `${gameSpeed / 1000}s`;
+
+            // Pause the game
+            clearInterval(gameInterval);
+
+            // Display level text
+            const levelText = document.createElement('div');
+            levelText.innerText = `LEVEL ${level}`;
+            levelText.classList.add('level-text');
+            gameContainer.appendChild(levelText);
+
+            // Increment level counter
+            level++;
+
+            // Resume the game after 1 second
+            setTimeout(() => {
+                gameContainer.removeChild(levelText);
+                gameInterval = setInterval(gameLoop, 100);
+            }, 1000);
         }
     }
-    setInterval(increaseGameSpeed, 5000); // Adjust speed every 5 seconds
+    setInterval(increaseGameSpeed, 8000); // Adjust speed every 8 seconds
 
     // Check collision with obstacle
     function checkObstacleCollision() {
@@ -101,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         checkObstacleCollision();
         checkCoinCollection();
     }
-    setInterval(gameLoop, 100); // Check for collisions
+    let gameInterval = setInterval(gameLoop, 100); // Check for collisions
 
     // Generate coins periodically
     setInterval(createCoin, 2000); // Adjust timing as needed
