@@ -10,75 +10,59 @@ body, html {
   height: 300px;
   background-color: #f4f4f4;
   position: relative;
-  overflow: hidden; /* Prevents anything from drawing outside */
-  margin-bottom: 50px; /* Space for the coin counter and progress bar */
+  overflow: hidden;
+  margin-bottom: 50px;
 }
 
-#coin {
-  width: 30px; /* Coin size */
-  height: 30px; /* Coin size */
-  background-image: url('coin.png'); /* Coin image */
-  background-size: cover;
+#player, #obstacle, .coin {
+  width: 30px;
+  height: 30px;
   position: absolute;
-  animation: moveCoin 5s linear infinite; /* Adjust timing as needed */
-  bottom: 120px; /* Adjust based on jump height */
-  right: 50%; /* Initial position - adjust as needed */
+  bottom: 0;
 }
 
 #player {
-  width: 50px; /* Adjust as needed */
-  height: 50px; /* Adjust as needed */
-  background-image: url('char2.png'); /* Replace with your image path */
-  background-size: cover;
-  position: absolute;
-  bottom: 0;
+  background-image: url('char2.png');
   left: 50px;
 }
 
 #obstacle {
-  width: 20px; /* Adjust as needed */
-  height: 20px; /* Adjust as needed */
   background-color: #EA4335;
-  position: absolute;
-  bottom: 0;
-  right: 20px;
   animation: moveObstacle 2s infinite linear;
 }
 
-/* Coins display */
-#coinCounter, #progressBarContainer {
-  position: absolute;
-  top: 320px; /* Position below the game container */
-  left: 0;
-  width: 100%;
-  z-index: 2; /* Ensure it's above the game container */
+.coin {
+  background-image: url('coin.png');
+  animation: moveCoin 5s linear infinite;
+  bottom: 120px; /* Coin position adjusted for jump height */
 }
 
-/* Progress bar container */
+#coinCounter, #progressBarContainer {
+  position: absolute;
+  top: 320px;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+}
+
 #progressBarContainer {
   background-color: #eee;
 }
 
-/* Progress bar */
 #progressBar {
   height: 100%;
-  width: 0%; /* Initial width */
+  width: 0%;
   background-color: #4CAF50;
 }
 
-@keyframes moveObstacle {
-  0% { right: -50px; }
-  100% { right: 100%; }
-}
-
-@keyframes moveCoin {
-    from { right: 100%; }
-    to { right: 0; }
+@keyframes moveObstacle, moveCoin {
+  0% { right: 100%; }
+  100% { right: -30px; } /* Ensure obstacles and coins move out of view */
 }
 
 @keyframes jump {
   0%, 100% { bottom: 0; }
-  50% { bottom: 120px; } /* Adjust peak height of the jump */
+  50% { bottom: 150px; } /* Ensure jump height allows coin collection */
 }
 
 .jump-animation {
