@@ -1,65 +1,95 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const gameContainer = document.getElementById("gameContainer");
     const player = document.getElementById("player");
     const obstacle = document.getElementById("obstacle");
-    const coinsContainer = document.getElementById("coinsContainer");
     const coinCounter = document.getElementById("coinCounter");
+    const progressBar = document.getElementById("progressBar");
     let coinsCollected = 0;
     let gameSpeed = 2000; // Initial speed for obstacle movement in milliseconds
-
-    function createCoin() {
-        const coin = document.createElement('div');
-        coin.className = 'coin';
-        coinsContainer.appendChild(coin);
-        setTimeout(() => coin.remove(), 5000); // Remove coin after 5 seconds
-    }
 
     function jump() {
         if (!player.classList.contains("jump-animation")) {
             player.classList.add("jump-animation");
-            setTimeout(() => player.classList.remove("jump-animation"), 800);
+            setTimeout(() => {
+                player.classList.remove("jump-animation");
+            }, 800); // Duration of the jump animation
         }
     }
 
     document.addEventListener('touchstart', jump);
     document.addEventListener('click', jump);
 
-    setInterval(() => {
-        createCoin();
-        checkObstacleCollision();
-    }, 2000); // Create a new coin and check for collision every 2 seconds
+    function createCoin() {
+        const coin = document.createElement('div');
+        coin.className = 'coin';
+        coin.style.backgroundImage = "url('coin.png')"; // Path to your coin image
+        coin.style.position = "absolute";
+        coin.style.width = "30px"; // Match your CSS
+        coin.style.height = "30px"; // Match your CSS
+        coin.style.bottom = "100px"; // Adjust based on jump height
+        let coinPosition = Math.random() * (gameContainer.offsetWidth - 30);
+        coin.style.left = `${coinPosition}px`;
+        gameContainer.appendChild(coin);
 
-    function checkObstacleCollision() {
-        // Collision detection logic for obstacle...
+        setTimeout(() => {
+            gameContainer.removeChild(coin);
+        }, gameSpeed); // Remove the coin after it moves across the screen
     }
 
+    // Increase game speed over time
+    function increaseGameSpeed() {
+        if (gameSpeed > 1000) { // Prevents speed from becoming too fast
+            gameSpeed -= 100; // Adjust as needed
+            obstacle.style.animationDuration = `${gameSpeed / 1000}s`;
+        }
+    }
+    setInterval(increaseGameSpeed, 5000); // Adjust speed every 5 seconds
+
+    // Check collision with obstacle
+    function checkObstacleCollision() {
+        const playerRect = player.getBoundingClientRect();
+        const obstacleRect = obstacle.getBoundingClientRect();
+
+        if (playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right &&
+            playerRect.bottom > obstacleRect.top) {
+            gameOver();
+        }
+    }
+
+    // Check if the player collects a coin
     function checkCoinCollection() {
         const playerRect = player.getBoundingClientRect();
         document.querySelectorAll('.coin').forEach(coin => {
             const coinRect = coin.getBoundingClientRect();
-            if (playerRect.left < coinRect.right && playerRect.right > coinRect.left &&
-                playerRect.top < coinRect.bottom && playerRect.bottom > coinRect.top) {
-                coin.remove(); // Remove the coin upon collection
+            if (playerRect.right > coinRect.left && playerRect.left < coinRect.right &&
+                playerRect.bottom > coinRect.top && playerRect.top < coinRect.bottom) {
+                gameContainer.removeChild(coin);
                 coinsCollected++;
                 coinCounter.innerText = `Coins: ${coinsCollected}`;
+                updateProgressBar();
             }
         });
     }
 
-    setInterval(checkCoinCollection, 100); // Continuously check for coin collection
-
-    function increaseGameSpeed() {
-        if (gameSpeed > 500) {
-            gameSpeed -= 10;
-            obstacle.style.animationDuration = `${gameSpeed / 1000}s`;
-        }
+    function updateProgressBar() {
+        // Assuming a goal of collecting 100 coins for simplicity
+        const progress = Math.min(coinsCollected / 100 * 100, 100);
+        progressBar.style.width = `${progress}%`;
     }
-
-    setInterval(increaseGameSpeed, 1000); // Increase speed at fixed intervals
 
     function gameOver() {
         alert(`Game Over! You collected ${coinsCollected} coins.`);
-        // Reset game state for a new game...
+        // Reset game or reload page for simplicity
+        window.location.reload();
     }
 
-    // Extend checkObstacleCollision and gameOver logic as needed...
+    // Main game loop
+    function gameLoop() {
+        checkObstacleCollision();
+        checkCoinCollection();
+    }
+    setInterval(gameLoop, 100); // Check for collisions
+
+    // Generate coins periodically
+    setInterval(createCoin, 2000); // Adjust timing as needed
 });
