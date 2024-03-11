@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             player.classList.add("jump-animation");
             setTimeout(() => {
                 player.classList.remove("jump-animation");
-            }, 800); // Duration of the jump animation
+            }, 900); // Duration of the jump animation
         }
     }
 
