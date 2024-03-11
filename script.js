@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             player.classList.add("jump-animation");
             setTimeout(() => {
                 player.classList.remove("jump-animation");
-            }, 800); // Duration of the jump animation
+            }, 900); // Duration of the jump animation
         }
     }
 
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createCoin() {
         const coin = document.createElement('div');
         coin.className = 'coin';
-        coin.style.bottom = `${jumpHeight + Math.random() * (gameContainer.offsetHeight - jumpHeight - 30)}px`; // Adjust based on gameplay needs
+        coin.style.bottom = `${jumpHeight + Math.random() * (gameContainer.offsetHeight - jumpHeight -70)}px`; // Adjust based on gameplay needs
         gameContainer.appendChild(coin);
 
         setTimeout(() => {
