@@ -14,6 +14,16 @@ body, html {
   background-color: #e5e5e5;
 }
 
+.level-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 36px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
 #player {
   width: 50px;
   height: 50px;
