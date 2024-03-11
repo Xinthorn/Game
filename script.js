@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Set the bottom position of the coin to this calculated height
     coin.style.bottom = `${coinHeight}px`;
-    
+
     // Add animation to move the coin across the screen
     coin.style.animation = `moveCoin ${gameSpeed / 1000}s linear`;
 
@@ -47,8 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     gameContainer.appendChild(coin);
 }
-
-
 
     // Increase game speed over time
     function increaseGameSpeed() {
