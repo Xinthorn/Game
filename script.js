@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressBar = document.getElementById("progressBar");
     let coinsCollected = 0;
     let gameSpeed = 2000; // Initial speed for obstacle movement in milliseconds
+    let jumpHeight = 150; // Adjust based on the character's jump height
 
     function jump() {
         if (!player.classList.contains("jump-animation")) {
@@ -21,11 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function createCoin() {
         const coin = document.createElement('div');
         coin.className = 'coin';
-        coin.style.bottom = `${Math.random() * (gameContainer.offsetHeight - 30)}px`; // Adjust based on gameplay needs
+        coin.style.bottom = `${jumpHeight + Math.random() * (gameContainer.offsetHeight - jumpHeight - 30)}px`; // Adjust based on gameplay needs
         gameContainer.appendChild(coin);
 
         setTimeout(() => {
-            gameContainer.removeChild(coin);
+            if (coin.parentNode === gameContainer) {
+                gameContainer.removeChild(coin);
+            }
         }, gameSpeed); // Remove the coin after it moves across the screen
     }
 
