@@ -12,6 +12,16 @@ body, html {
   position: relative;
 }
 
+#coin {
+  width: 30px; /* Coin size */
+  height: 30px; /* Coin size */
+  background-image: url('coin.png'); /* Coin image */
+  background-size: cover;
+  position: absolute;
+  bottom: 120px; /* Adjust based on jump height */
+  right: 50%; /* Initial position - adjust as needed */
+}
+
 #player {
   width: 50px; /* Adjust as needed */
   height: 50px; /* Adjust as needed */
