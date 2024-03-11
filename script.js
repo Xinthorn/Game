@@ -22,6 +22,20 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('touchstart', jump);
     document.addEventListener('click', jump);
 
+function checkObstacleCollision() {
+    const playerRect = player.getBoundingClientRect();
+    const obstacleRect = obstacle.getBoundingClientRect();
+
+    if (playerRect.left < obstacleRect.right && playerRect.right > obstacleRect.left &&
+        playerRect.top < obstacleRect.bottom && playerRect.bottom > obstacleRect.top) {
+        gameOver();
+    }
+}
+
+// Call this function periodically or integrate into your game loop
+setInterval(checkObstacleCollision, 100); // Example: check every 100ms
+
+
     // Check if the player collects a coin
     function checkCoinCollection() {
         const playerRect = player.getBoundingClientRect();
