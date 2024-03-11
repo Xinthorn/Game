@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.addEventListener('touchstart', jump);
-    document.addEventListener('click', jump);
+    document.addEventListener('mousedown', jump);
 
     function createCoin() {
     const coin = document.createElement('div');
