@@ -21,32 +21,33 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', jump);
 
     function createCoin() {
-        const coin = document.createElement('div');
-        coin.className = 'coin';
+    const coin = document.createElement('div');
+    coin.className = 'coin';
 
-        // Calculate the maximum height the coin can appear at
-        const maxCoinHeight = gameContainer.offsetHeight - jumpHeight - 30;
+    // Calculate the maximum height the coin can appear at
+    const maxCoinHeight = gameContainer.offsetHeight - jumpHeight - 30 - 10; // Subtract 10 pixels for a buffer above jump height
 
-        // Generate a random height for the coin within the allowed range
-        const coinHeight = jumpHeight + Math.random() * maxCoinHeight;
+    // Generate a random height for the coin within the allowed range
+    const coinHeight = jumpHeight + Math.random() * maxCoinHeight;
 
-        // Set the bottom position of the coin to this calculated height
-        coin.style.bottom = `${coinHeight}px`;
+    // Set the bottom position of the coin to this calculated height
+    coin.style.bottom = `${coinHeight}px`;
 
-        // Add animation to move the coin across the screen
-        coin.style.animation = `moveCoin ${gameSpeed / 1000}s linear`;
+    // Add animation to move the coin across the screen
+    coin.style.animation = `moveCoin ${gameSpeed / 1000}s linear`;
 
-        // Add event listener to remove the coin after it has moved twice through the gameplay area
-        let moves = 0;
-        coin.addEventListener('animationiteration', () => {
-            moves++;
-            if (moves >= 2) {
-                gameContainer.removeChild(coin);
-            }
-        });
+    // Add event listener to remove the coin after it has moved twice through the gameplay area
+    let moves = 0;
+    coin.addEventListener('animationiteration', () => {
+        moves++;
+        if (moves >= 2) {
+            gameContainer.removeChild(coin);
+        }
+    });
 
-        gameContainer.appendChild(coin);
-    }
+    gameContainer.appendChild(coin);
+}
+
 
     // Increase game speed over time
     function increaseGameSpeed() {
