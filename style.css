@@ -11,13 +11,13 @@ body, html {
   height: 300px;
   position: relative;
   overflow: hidden;
-  background-color: #e5e5e5; /* Light grey background for contrast */
+  background-color: #e5e5e5;
 }
 
 #player {
-  width: 50px; /* Adjust based on your character image */
-  height: 50px; /* Adjust based on your character image */
-  background-image: url('char2.png'); /* Ensure the path to your character image is correct */
+  width: 50px;
+  height: 50px;
+  background-image: url('char2.png');
   background-size: cover;
   position: absolute;
   bottom: 0;
@@ -25,13 +25,13 @@ body, html {
 }
 
 #obstacle {
-  width: 50px; /* Adjust based on the obstacle size */
-  height: 50px; /* Adjust based on the obstacle size */
-  background-color: #EA4335; /* Example color, replace or adjust as needed */
+  width: 50px;
+  height: 50px;
+  background-color: #EA4335;
   position: absolute;
   bottom: 0;
-  right: -50px; /* Start off-screen */
-  animation: moveObstacle 3s linear infinite; /* Animation makes the obstacle move across the screen */
+  right: -50px;
+  animation: moveObstacle 3s linear infinite;
 }
 
 #coinCounter {
@@ -56,15 +56,19 @@ body, html {
 #progressBar {
   height: 100%;
   width: 0%;
-  background-color: #76b852; /* Green progress bar */
+  background-color: #76b852;
 }
 
 @keyframes moveObstacle {
   0% { right: -50px; }
-  100% { right: 100vw; } /* Obstacle exits the screen on the left */
+  100% { right: 100vw; }
 }
 
 @keyframes jump {
   0%, 100% { bottom: 0; }
-  50% { bottom: 100px; } /* This matches the peak of the jump animation */
+  50% { bottom: 100px; }
+}
+
+.jump-animation {
+  animation: jump 0.8s ease;
 }
