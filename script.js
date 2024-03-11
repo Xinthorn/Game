@@ -21,15 +21,23 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', jump);
 
     function createCoin() {
-        const coin = document.createElement('div');
-        coin.className = 'coin';
-        coin.style.bottom = `${jumpHeight + Math.random() * (gameContainer.offsetHeight - jumpHeight - 30)}px`; // Adjust based on gameplay needs
-        gameContainer.appendChild(coin);
+    const coin = document.createElement('div');
+    coin.className = 'coin';
+    
+    // Calculate the maximum height the coin can appear at
+    const maxCoinHeight = gameContainer.offsetHeight - jumpHeight - 30;
+    
+    // Generate a random height within the allowed range
+    const coinHeight = jumpHeight + Math.random() * maxCoinHeight;
+    
+    coin.style.bottom = `${coinHeight}px`; // Set the bottom position
+    gameContainer.appendChild(coin);
 
-        coin.addEventListener('animationend', () => {
-            gameContainer.removeChild(coin);
-        });
-    }
+    coin.addEventListener('animationend', () => {
+        gameContainer.removeChild(coin);
+    });
+}
+
 
     // Increase game speed over time
     function increaseGameSpeed() {
