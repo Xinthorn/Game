@@ -1,35 +1,69 @@
-// Listen for touch events on the entire document
-document.addEventListener('touchstart', function() {
-    jump();
-});
-
-function jump() {
+document.addEventListener('DOMContentLoaded', () => {
     const player = document.getElementById("player");
-    // Prevent multiple jumps by checking if the jump-animation class is already applied
-    if (!player.classList.contains("jump-animation")) {
-        player.classList.add("jump-animation");
-        // Remove the jump-animation class after 500ms to allow for another jump
-        setTimeout(function() {
-            player.classList.remove("jump-animation");
-        }, 800); // Adjust this duration to control how long the jump lasts
+    const obstacle = document.getElementById("obstacle");
+    const coin = document.getElementById("coin");
+    const coinCounter = document.getElementById("coinCounter");
+    let coinsCollected = 0;
+    let gameSpeed = 2000; // Initial speed for obstacle movement in milliseconds
+
+    // Jump function triggered by touch or click
+    function jump() {
+        if (!player.classList.contains("jump-animation")) {
+            player.classList.add("jump-animation");
+            setTimeout(() => {
+                player.classList.remove("jump-animation");
+                // Check for coin collection immediately after the jump
+                checkCoinCollection();
+            }, 800); // Adjust duration to match CSS animation
+        }
     }
-}
 
-const player = document.getElementById("player");
-const obstacle = document.getElementById("obstacle");
+    // Listen for both touchstart and click events for broader device compatibility
+    document.addEventListener('touchstart', jump);
+    document.addEventListener('click', jump);
 
-setInterval(function() {
-    const playerRect = document.getElementById("player").getBoundingClientRect();
-    const obstacleRect = document.getElementById("obstacle").getBoundingClientRect();
+    // Check if the player collects a coin
+    function checkCoinCollection() {
+        const playerRect = player.getBoundingClientRect();
+        const coinRect = coin.getBoundingClientRect();
 
-    // Check for horizontal overlap
-    const horizontalOverlap = obstacleRect.left < playerRect.right && obstacleRect.right > playerRect.left;
-
-    // Check if the player is vertically clear of the obstacle
-    const isPlayerClearOfObstacle = playerRect.bottom <= obstacleRect.top;
-
-    // If there's horizontal overlap but the player isn't clear of the obstacle, it's a collision
-    if (horizontalOverlap && !isPlayerClearOfObstacle) {
-        alert("Game Over!");
+        // Simple collision detection for coin collection
+        if (playerRect.left < coinRect.right && playerRect.right > coinRect.left &&
+            playerRect.top < coinRect.bottom && playerRect.bottom > coinRect.top) {
+            coin.style.display = 'none'; // Hide the coin after collection
+            coinsCollected++; // Increment the coins collected count
+            coinCounter.innerText = `Coins: ${coinsCollected}`; // Update the display
+            setTimeout(resetCoin, 1000); // Reset coin position after a delay for the next collection
+        }
     }
-}, 10);
+
+    // Reset or reposition the coin after collection
+    function resetCoin() {
+        coin.style.display = 'block'; // Show the coin again for collection
+        // Adjust the reset logic as per your game design, e.g., randomize position
+    }
+
+    // Function to increase game speed over time
+    function increaseGameSpeed() {
+        if (gameSpeed > 500) { // Set a minimum speed limit to prevent it from becoming too fast
+            gameSpeed -= 10; // Gradually increase the game's speed
+            obstacle.style.animationDuration = `${gameSpeed / 1000}s`;
+        }
+    }
+    setInterval(increaseGameSpeed, 1000); // Increase speed at fixed intervals
+
+    // Function to reset the game state and display coins collected on game over
+    function gameOver() {
+        alert(`Game Over! You collected ${coinsCollected} coins.`);
+        // Reset game state for a new game
+        coinsCollected = 0;
+        coinCounter.innerText = 'Coins: 0';
+        coin.style.display = 'block'; // Show the coin again
+        gameSpeed = 2000; // Reset game speed
+        obstacle.style.animationDuration = '2s'; // Reset obstacle speed
+        resetCoin(); // Ensure the coin is reset for the next game
+    }
+
+    // Add your logic to call gameOver() when appropriate, such as on collision with the obstacle
+    // This might involve extending the jump, checkCoinCollection, or adding new event listeners for game logic
+});
