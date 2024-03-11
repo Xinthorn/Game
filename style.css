@@ -76,6 +76,11 @@ body, html {
   100% { right: 100%; }
 }
 
+@keyframes moveCoin {
+    from { right: 100%; }
+    to { right: 0; }
+}
+
 @keyframes jump {
   0%, 100% { bottom: 0; }
   50% { bottom: 120px; } /* Adjust peak height of the jump */
