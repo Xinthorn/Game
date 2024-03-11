@@ -18,6 +18,7 @@ body, html {
   background-image: url('coin.png'); /* Coin image */
   background-size: cover;
   position: absolute;
+  animation: moveCoin 5s linear infinite; /* Adjust timing as needed */
   bottom: 120px; /* Adjust based on jump height */
   right: 50%; /* Initial position - adjust as needed */
 }
