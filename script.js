@@ -26,11 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
         coin.style.bottom = `${jumpHeight + Math.random() * (gameContainer.offsetHeight - jumpHeight - 30)}px`; // Adjust based on gameplay needs
         gameContainer.appendChild(coin);
 
-        setTimeout(() => {
-            if (coin.parentNode === gameContainer) {
-                gameContainer.removeChild(coin);
-            }
-        }, gameSpeed * 2); // Increase duration for coins to stay visible
+        coin.addEventListener('animationend', () => {
+            gameContainer.removeChild(coin);
+        });
     }
 
     // Increase game speed over time
