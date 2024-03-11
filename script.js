@@ -23,20 +23,31 @@ document.addEventListener('DOMContentLoaded', () => {
     function createCoin() {
     const coin = document.createElement('div');
     coin.className = 'coin';
-    
+
     // Calculate the maximum height the coin can appear at
     const maxCoinHeight = gameContainer.offsetHeight - jumpHeight - 30;
-    
-    // Generate a random height within the allowed range
-    const coinHeight = jumpHeight + Math.random() * maxCoinHeight;
-    
-    coin.style.bottom = `${coinHeight}px`; // Set the bottom position
-    gameContainer.appendChild(coin);
 
-    coin.addEventListener('animationend', () => {
-        gameContainer.removeChild(coin);
+    // Generate a random height for the coin within the allowed range
+    const coinHeight = jumpHeight + Math.random() * maxCoinHeight;
+
+    // Set the bottom position of the coin to this calculated height
+    coin.style.bottom = `${coinHeight}px`;
+    
+    // Add animation to move the coin across the screen
+    coin.style.animation = `moveCoin ${gameSpeed / 1000}s linear`;
+
+    // Add event listener to remove the coin after it has moved twice through the gameplay area
+    let moves = 0;
+    coin.addEventListener('animationiteration', () => {
+        moves++;
+        if (moves >= 2) {
+            gameContainer.removeChild(coin);
+        }
     });
+
+    gameContainer.appendChild(coin);
 }
+
 
 
     // Increase game speed over time
