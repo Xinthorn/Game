@@ -24,14 +24,23 @@ body, html {
   left: 50px;
 }
 
-#obstacle {
+#obstacle, .coin {
   width: 30px;
   height: 30px;
-  background-color: #EA4335;
   position: absolute;
   bottom: 0;
-  right: -50px;
-  animation: moveObstacle 3s linear infinite;
+  right: 100%;
+  animation: moveLeft 3s linear infinite;
+}
+
+#obstacle {
+  background-color: #EA4335;
+}
+
+.coin {
+  background-image: url('coin.png');
+  background-size: cover;
+  bottom: 100px; /* Adjust this to control the height at which coins appear */
 }
 
 #coinCounter {
@@ -59,23 +68,14 @@ body, html {
   background-color: #76b852;
 }
 
-@keyframes moveObstacle {
-  0% { right: -50px; }
-  100% { right: 100vw; }
+@keyframes moveLeft {
+  from { right: 100%; }
+  to { right: -30px; }
 }
 
 @keyframes jump {
   0%, 100% { bottom: 0; }
   50% { bottom: 150px; }
-}
-
-.coin {
-  width: 30px; /* Coin size */
-  height: 30px; /* Coin size */
-  background-image: url('coin.png'); /* Path to your coin image */
-  background-size: cover;
-  position: absolute;
-  bottom: 100px; /* Adjust based on gameplay needs */
 }
 
 .jump-animation {
