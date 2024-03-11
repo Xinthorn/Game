@@ -29,8 +29,8 @@ body, html {
   height: 30px;
   position: absolute;
   bottom: 0;
-  right: 100%;
-  animation: moveLeft 3s linear infinite;
+  left: 100%;
+  animation: moveRight 3s linear infinite;
 }
 
 #obstacle {
@@ -68,9 +68,9 @@ body, html {
   background-color: #76b852;
 }
 
-@keyframes moveLeft {
-  from { right: 100%; }
-  to { right: -30px; }
+@keyframes moveRight {
+  from { left: 100%; }
+  to { left: -30px; }
 }
 
 @keyframes jump {
