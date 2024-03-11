@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const gameContainer = document.getElementById("gameContainer");
     const player = document.getElementById("player");
-    const obstacle = document.getElementById("obstacle");
     const coinCounter = document.getElementById("coinCounter");
     const progressBar = document.getElementById("progressBar");
     let coinsCollected = 0;
@@ -22,13 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createCoin() {
         const coin = document.createElement('div');
         coin.className = 'coin';
-        coin.style.backgroundImage = "url('coin.png')"; // Path to your coin image
-        coin.style.position = "absolute";
-        coin.style.width = "30px"; // Match your CSS
-        coin.style.height = "30px"; // Match your CSS
-        coin.style.bottom = "100px"; // Adjust based on jump height
-        let coinPosition = Math.random() * (gameContainer.offsetWidth - 30);
-        coin.style.left = `${coinPosition}px`;
+        coin.style.bottom = `${Math.random() * (gameContainer.offsetHeight - 30)}px`; // Adjust based on gameplay needs
         gameContainer.appendChild(coin);
 
         setTimeout(() => {
@@ -40,21 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function increaseGameSpeed() {
         if (gameSpeed > 1000) { // Prevents speed from becoming too fast
             gameSpeed -= 100; // Adjust as needed
-            obstacle.style.animationDuration = `${gameSpeed / 1000}s`;
         }
     }
     setInterval(increaseGameSpeed, 5000); // Adjust speed every 5 seconds
-
-    // Check collision with obstacle
-    function checkObstacleCollision() {
-        const playerRect = player.getBoundingClientRect();
-        const obstacleRect = obstacle.getBoundingClientRect();
-
-        if (playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right &&
-            playerRect.bottom > obstacleRect.top) {
-            gameOver();
-        }
-    }
 
     // Check if the player collects a coin
     function checkCoinCollection() {
@@ -77,15 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
         progressBar.style.width = `${progress}%`;
     }
 
-    function gameOver() {
-        alert(`Game Over! You collected ${coinsCollected} coins.`);
-        // Reset game or reload page for simplicity
-        window.location.reload();
-    }
-
     // Main game loop
     function gameLoop() {
-        checkObstacleCollision();
         checkCoinCollection();
     }
     setInterval(gameLoop, 100); // Check for collisions
