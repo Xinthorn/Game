@@ -8,18 +8,30 @@ document.addEventListener('DOMContentLoaded', () => {
     let jumpHeight = 150; // Adjust based on the character's jump height
     let level = 1; // Level counter
 
-function jump() {
+   function jump() {
     if (!player.classList.contains("jump-animation")) {
         player.classList.add("jump-animation");
         const jumpDistance = 100; // Adjust as needed
-        const jumpDuration = 500; // Adjust as needed
-        player.style.transition = `transform ${jumpDuration}ms linear`;
-        player.style.transform = `translateX(${jumpDistance}px) translateY(-${jumpHeight}px)`;
-        setTimeout(() => {
-            player.classList.remove("jump-animation");
-            player.style.transition = '';
-            player.style.transform = `translateX(${jumpDistance}px) translateY(0)`;
-        }, jumpDuration); // Duration of the jump animation
+        const jumpHeight = 100; // Ensure jump height is greater than obstacle height
+        const jumpDuration = 900; // Adjust as needed
+        const startTime = performance.now();
+
+        function jumpStep(timestamp) {
+            const elapsedTime = timestamp - startTime;
+            const progress = elapsedTime / jumpDuration;
+            const translateY = Math.max(0, jumpHeight * (1 - 4 * progress) * progress); // Quadratic curve for smoother jump
+
+            player.style.transform = `translateX(${jumpDistance}px) translateY(-${translateY}px)`;
+
+            if (progress < 1) {
+                requestAnimationFrame(jumpStep);
+            } else {
+                player.classList.remove("jump-animation");
+                player.style.transform = `translateX(${jumpDistance}px) translateY(0)`;
+            }
+        }
+
+        requestAnimationFrame(jumpStep);
     }
 }
 
