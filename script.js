@@ -11,29 +11,31 @@ document.addEventListener('DOMContentLoaded', () => {
    function jump() {
     if (!player.classList.contains("jump-animation")) {
         player.classList.add("jump-animation");
-        const jumpDistance = 100; // Adjust as needed
-        const jumpHeight = 100; // Ensure jump height is greater than obstacle height
+        const jumpDistance = 120; // Adjust as needed
+        const jumpHeight = 120; // Ensure jump height is greater than obstacle height
         const jumpDuration = 900; // Adjust as needed
         const startTime = performance.now();
+        const initialTranslateY = parseFloat(window.getComputedStyle(player).transform.split(',')[5]); // Get initial translateY value
 
         function jumpStep(timestamp) {
             const elapsedTime = timestamp - startTime;
             const progress = elapsedTime / jumpDuration;
             const translateY = Math.max(0, jumpHeight * (1 - 4 * progress) * progress); // Quadratic curve for smoother jump
 
-            player.style.transform = `translateX(${jumpDistance}px) translateY(-${translateY}px)`;
+            player.style.transform = `translateX(${jumpDistance}px) translateY(${initialTranslateY - translateY}px)`; // Adjust initial translateY value
 
             if (progress < 1) {
                 requestAnimationFrame(jumpStep);
             } else {
                 player.classList.remove("jump-animation");
-                player.style.transform = `translateX(${jumpDistance}px) translateY(0)`;
+                player.style.transform = `translateX(${jumpDistance}px) translateY(${initialTranslateY}px)`; // Reset to initial position
             }
         }
 
         requestAnimationFrame(jumpStep);
     }
 }
+
 
 
     document.addEventListener('touchstart', jump);
