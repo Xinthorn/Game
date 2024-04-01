@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
    function jump() {
     if (!player.classList.contains("jump-animation")) {
         player.classList.add("jump-animation");
-        const jumpDistance = 200; // Adjust as needed
+        const jumpDistance = 300; // Adjust as needed
         const jumpHeight = 150; // Ensure jump height is greater than obstacle height
         const jumpDuration = 1000; // Adjust as needed
         const startTime = performance.now();
