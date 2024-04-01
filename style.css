@@ -1,17 +1,17 @@
 body, html {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
 }
 
 #gameContainer {
-  width: 100vw;
-  height: 300px;
-  position: relative;
-  overflow: hidden;
-  background-color: #e5e5e5;
+    width: 100vw;
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+    background-color: #74e8fc;
 }
 
 .level-text {
@@ -25,73 +25,102 @@ body, html {
 }
 
 #player {
-  width: 50px;
-  height: 50px;
-  background-image: url('char2.png');
-  background-size: cover;
-  position: absolute;
-  bottom: 0;
-  left: 50px;
-}
-
-#obstacle, .coin {
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  bottom: 0;
-  left: 100%;
-  animation: moveRight 3s linear infinite;
+    width: 70px;
+    height: 70px;
+    background-image: url('char2.gif');
+    background-size: cover;
+    position: absolute;
+    bottom: 0;
+    left: 50px;
 }
 
 #obstacle {
-  background-color: #EA4335;
+    width: 50px;
+    height: 50px;
+    background-image: url('obstacle.png');
+    background-size: cover;
+    position: absolute;
+    bottom: 0;
+    left: 100%;
+    animation: moveRight 3s linear infinite;
+}
+
+#cloud {
+    width: 70px;
+    height: 70px;
+    background-image: url('cloud.png');
+    background-size: cover;
+    position: absolute;
+    bottom: 200px;
+    left: 100%;
+    animation: moveRight 5s linear infinite;
+}
+
+.coin, .bird {
+    position: absolute;
+    bottom: 0;
+    left: 100%;
+    animation: moveRight 3s linear infinite;
+}
+.bird {
+    width: 60px;
+    height: 60px;
 }
 
 .coin {
-  background-image: url('coin.png');
-  background-size: cover;
-  bottom: 100px; /* Adjust this to control the height at which coins appear */
+    width: 50px;
+    height: 50px;
+    background-image: url('coin.gif');
+    background-size: cover;
+    bottom: 100px; /* Adjust this to control the height at which coins appear */
+}
+
+.bird {
+    background-image: url('bird.gif');
+    background-size: cover;
+    bottom: 150px; /* Adjust this to control the height at which birds appear */
 }
 
 #coinCounter {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  color: #000;
-  font-size: 20px;
-  z-index: 10;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    color: #000;
+    font-size: 20px;
+    z-index: 10;
 }
 
 #progressBarContainer {
-  position: fixed;
-  top: 40px;
-  left: 10px;
-  width: 200px;
-  height: 20px;
-  background-color: #ddd;
-  z-index: 10;
+    position: fixed;
+    top: 40px;
+    left: 10px;
+    width: 20	0px;
+    height: 20px;
+    background-color: #ddd;
+    z-index: 10;
 }
 
 #progressBar {
-  height: 100%;
-  width: 0%;
-  background-color: #76b852;
+    height: 100%;
+    width: 0%;
+    background-color: #76b852;
 }
 
 @keyframes moveRight {
-  from { left: 100%; }
-  to { left: -30px; }
+    from { left: 100%; }
+    to { left: -30px; }
 }
 
 @keyframes jump {
-  0%, 100% { bottom: 0; }
-  50% { bottom: 150px; }
+    0%, 100% { bottom: 0; }
+    50% { bottom: 150px; }
 }
+
 @keyframes moveCoin {
   from { left: 100%; }
   to { left: -30px; }
 }
 
 .jump-animation {
-  animation: jump 0.9s ease;
+    animation: jump 0.9s ease;
 }
