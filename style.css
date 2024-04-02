@@ -77,8 +77,8 @@ body, html {
 }
 
 #coinCounter {
-    position: fixed;
-    top: 10px;
+    position: absolute;
+    bottom: 10px;
     left: 10px;
     color: #000;
     font-size: 20px;
@@ -86,8 +86,8 @@ body, html {
 }
 
 #progressBarContainer {
-    position: fixed;
-    top: 40px;
+    position: absolute;
+    bottom: 40px;
     left: 10px;
     width: 200px;
     height: 20px;
