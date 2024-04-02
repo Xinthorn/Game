@@ -10,9 +10,9 @@ body, html {
 }
 
 #gameContainer {
-    width: 80vw; /* Adjust as needed */
+    width: 100vw; /* Adjust as needed */
     max-width: 800px; /* Limit maximum width for larger screens */
-    height: calc(80vw * 9 / 16); /* Set height based on width to maintain aspect ratio of 16:9 */
+    height: calc(100vw * 9 / 16); /* Set height based on width to maintain aspect ratio of 16:9 */
     max-height: calc(800px * 9 / 16); /* Limit maximum height based on width */
     position: relative;
     overflow: hidden;
