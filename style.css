@@ -7,11 +7,14 @@ body, html {
 }
 
 #gameContainer {
-    width: 80%;
-    height: 80vh;
+    width: 100%;
+    height: 100vh;
     position: relative;
     overflow: hidden;
     background-color: #74e8fc;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
 }
 
 .level-text {
