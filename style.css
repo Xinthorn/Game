@@ -7,8 +7,8 @@ body, html {
 }
 
 #gameContainer {
-    width: 100vw;
-    height: 300px;
+    width: 80%;
+    height: 80vh;
     position: relative;
     overflow: hidden;
     background-color: #74e8fc;
@@ -119,6 +119,14 @@ body, html {
 @keyframes moveCoin {
   from { left: 100%; }
   to { left: -30px; }
+}
+
+@media (max-width: 768px) {
+    #gameContainer {
+        width: 90%;
+        height: 70vh;
+        margin: 5vh auto;
+    }
 }
 
 .jump-animation {
