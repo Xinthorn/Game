@@ -32,7 +32,7 @@ body, html {
 }
 
 #obstacle {
-    width: 3%; /* Adjust width of obstacle */
+    width: 2%; /* Adjust width of obstacle */
     aspect-ratio: 1 / 1; /* Maintain aspect ratio */
     background-image: url('obstacle.png');
     background-size: cover;
