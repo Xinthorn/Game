@@ -1,9 +1,12 @@
 body, html {
     margin: 0;
     padding: 0;
-    overflow: hidden;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 #gameContainer {
@@ -14,49 +17,39 @@ body, html {
     position: relative;
     overflow: hidden;
     background-color: #74e8fc;
-    margin: auto; /* Center the container horizontally */
-}
-
-
-.level-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 36px;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 #player {
-    width: 70px;
-    height: 70px;
+    width: 10%; /* Adjust width of player */
+    aspect-ratio: 1 / 1; /* Maintain aspect ratio */
     background-image: url('char2.gif');
     background-size: cover;
     position: absolute;
     bottom: 0;
-    left: 50px;
+    left: 5%;
 }
 
 #obstacle {
-    width: 30px;
-    height: 30px;
+    width: 5%; /* Adjust width of obstacle */
+    aspect-ratio: 1 / 1; /* Maintain aspect ratio */
     background-image: url('obstacle.png');
     background-size: cover;
     position: absolute;
     bottom: 0;
-    left: 100%;
+    left: 90%;
     animation: moveRight 3s linear infinite;
 }
 
 #cloud {
-    width: 70px;
-    height: 70px;
+    width: 20%; /* Adjust width of cloud */
+    aspect-ratio: 1 / 1; /* Maintain aspect ratio */
     background-image: url('cloud.png');
     background-size: cover;
     position: absolute;
     bottom: 200px;
-    left: 100%;
+    left: 90%;
     animation: moveRight 5s linear infinite;
 }
 
@@ -66,20 +59,18 @@ body, html {
     left: 100%;
     animation: moveRight 3s linear infinite;
 }
-.bird {
-    width: 60px;
-    height: 60px;
-}
 
 .coin {
-    width: 50px;
-    height: 50px;
+    width: 10%; /* Adjust width of coin */
+    aspect-ratio: 1 / 1; /* Maintain aspect ratio */
     background-image: url('coin.gif');
     background-size: cover;
     bottom: 100px; /* Adjust this to control the height at which coins appear */
 }
 
 .bird {
+    width: 12%; /* Adjust width of bird */
+    aspect-ratio: 1 / 1; /* Maintain aspect ratio */
     background-image: url('bird.gif');
     background-size: cover;
     bottom: 150px; /* Adjust this to control the height at which birds appear */
@@ -98,7 +89,7 @@ body, html {
     position: fixed;
     top: 40px;
     left: 10px;
-    width: 20	0px;
+    width: 200px;
     height: 20px;
     background-color: #ddd;
     z-index: 10;
@@ -120,19 +111,34 @@ body, html {
     50% { bottom: 150px; }
 }
 
-@keyframes moveCoin {
-  from { left: 100%; }
-  to { left: -30px; }
+.jump-animation {
+    animation: jump 0.9s ease;
 }
 
 @media (max-width: 768px) {
     #gameContainer {
         width: 90%;
-        height: 70vh;
-        margin: 5vh auto;
+        height: 56.25vw; /* Maintain 16:9 aspect ratio */
+        max-height: 450px; /* Limit maximum height */
     }
-}
 
-.jump-animation {
-    animation: jump 0.9s ease;
+    #player {
+        width: 15%; /* Adjust width of player for smaller screens */
+    }
+
+    #obstacle {
+        width: 7.5%; /* Adjust width of obstacle for smaller screens */
+    }
+
+    #cloud {
+        width: 25%; /* Adjust width of cloud for smaller screens */
+    }
+
+    .coin {
+        width: 15%; /* Adjust width of coin for smaller screens */
+    }
+
+    .bird {
+        width: 18%; /* Adjust width of bird for smaller screens */
+    }
 }
