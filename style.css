@@ -117,7 +117,7 @@ body, html {
 
 @media (max-width: 768px) {
     #gameContainer {
-        width: 90%;
+        /* width: 90%; */
         height: 56.25vw; /* Maintain 16:9 aspect ratio */
         max-height: 450px; /* Limit maximum height */
     }
