@@ -48,7 +48,7 @@ body, html {
     background-image: url('cloud.png');
     background-size: cover;
     position: absolute;
-    bottom: 200px;
+    bottom: 90%;
     left: 90%;
     animation: moveRight 5s linear infinite;
 }
