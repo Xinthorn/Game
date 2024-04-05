@@ -10,12 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let progressInterval; // Interval for updating progress bar
     let progress = 0; // Progress for progress bar
     let gameStartTime; // Start time of the game
+    let obstacle; // Obstacle element
 
-    // Store initial obstacle position
-    const obstacle = createObstacle();
-
-     function createObstacle() {
-        const obstacle = document.createElement('div');
+    // Function to create obstacle
+    function createObstacle() {
+        obstacle = document.createElement('div');
         obstacle.id = 'obstacle';
         obstacle.style.width = '50px'; // Set obstacle width
         obstacle.style.height = '50px'; // Set obstacle height
@@ -23,9 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
         obstacle.style.bottom = '0'; // Set obstacle bottom position
         obstacle.style.left = '100px'; // Set obstacle left position (adjust as needed)
         gameContainer.appendChild(obstacle);
-        return obstacle;
     }
 
+    // Function to handle player jump
     function jump() {
         if (!player.classList.contains("jump-animation")) {
             player.classList.add("jump-animation");
@@ -54,9 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Event listeners for player jump
     document.addEventListener('touchstart', jump);
     document.addEventListener('mousedown', jump);
 
+    // Function to create coins
     function createCoin() {
         const coin = document.createElement('div');
         coin.className = 'coin';
@@ -86,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameContainer.appendChild(coin);
     }
 
+    // Function to create birds
     function createBird() {
         const bird = document.createElement('div');
         bird.className = 'bird';
@@ -115,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameContainer.appendChild(bird);
     }
 
+    // Function to increase game speed
     function increaseGameSpeed() {
         if (gameSpeed > 1000) { // Prevents speed from becoming too fast
             gameSpeed -= 100; // Adjust as needed
@@ -133,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Function to update progress bar
     function updateProgressBar() {
         progress += 12.5; // Increment progress by 12.5% every 1 second (100% in 8 seconds)
         progressBar.style.width = `${progress}%`;
@@ -142,6 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Function to check obstacle collision
     function checkObstacleCollision() {
         const playerRect = player.getBoundingClientRect();
         const obstacleRect = obstacle.getBoundingClientRect();
@@ -152,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Function to check coin and bird collection
     function checkCollection() {
         const playerRect = player.getBoundingClientRect();
         document.querySelectorAll('.coin, .bird').forEach(item => {
@@ -170,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Function to end the game
     function gameOver() {
         clearInterval(gameInterval); // Stop the game loop
         clearInterval(progressInterval); // Stop updating progress bar
@@ -180,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.reload();
     }
 
+    // Function for the game loop
     function gameLoop() {
         checkObstacleCollision();
         checkCollection();
@@ -194,4 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start updating progress bar
     gameStartTime = performance.now();
     progressInterval = setInterval(updateProgressBar, 1000);
+
+    // Call function to create initial obstacle
+    createObstacle();
 });
