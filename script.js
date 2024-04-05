@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Set obstacle position back to the stored position
             obstacle.style.top = initialObstaclePosition.top + 'px';
+            obstacle.style.left = initialObstaclePosition.left + 'px';
         }
     }
 
