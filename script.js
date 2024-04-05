@@ -108,17 +108,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (gameSpeed > 1000) { // Prevents speed from becoming too fast
             gameSpeed -= 100; // Adjust as needed
 
-            // Store obstacle position
-            const obstaclePosition = obstacle.getBoundingClientRect();
-
             obstacle.style.animationDuration = `${gameSpeed / 1000}s`;
             clearInterval(progressInterval); // Stop updating progress bar
             progress = 0; // Reset progress
             progressInterval = setInterval(updateProgressBar, 1000); // Start updating progress bar again
-
-            // Set obstacle position back to the stored position
-            obstacle.style.top = initialObstaclePosition.top + 'px';
-            obstacle.style.left = initialObstaclePosition.left + 'px';
         }
     }
 
