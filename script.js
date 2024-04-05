@@ -101,15 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameContainer.appendChild(bird);
     }
 
-    function increaseGameSpeed() {
-        if (gameSpeed > 1000) { // Prevents speed from becoming too fast
-            gameSpeed -= 100; // Adjust as needed
-            obstacle.style.animationDuration = `${gameSpeed / 1000}s`;
-            clearInterval(progressInterval); // Stop updating progress bar
-            progress = 0; // Reset progress
-            progressInterval = setInterval(updateProgressBar, 1000); // Start updating progress bar again
-        }
-    }
+
     
 function increaseGameSpeed() {
     if (gameSpeed > 1000) { // Prevents speed from becoming too fast
