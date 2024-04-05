@@ -14,15 +14,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to create obstacle
     function createObstacle() {
-        obstacle = document.createElement('div');
-        obstacle.id = 'obstacle';
-       // obstacle.style.width = '50px'; // Set obstacle width
-        // obstacle.style.height = '50px'; // Set obstacle height
-        obstacle.style.position = 'absolute'; // Set obstacle position
-        obstacle.style.bottom = '0'; // Set obstacle bottom position
-        obstacle.style.left = '100px'; // Set obstacle left position (adjust as needed)
-        gameContainer.appendChild(obstacle);
-    }
+    const newObstacle = document.createElement('div');
+    newObstacle.id = 'obstacle';
+    newObstacle.style.width = '50px'; // Set obstacle width
+    newObstacle.style.height = '50px'; // Set obstacle height
+    newObstacle.style.position = 'absolute'; // Set obstacle position
+    newObstacle.style.bottom = '0'; // Set obstacle bottom position
+    newObstacle.style.left = '100px'; // Set obstacle left position (adjust as needed)
+    gameContainer.appendChild(newObstacle);
+    obstacle = newObstacle; // Update obstacle variable to reference the new obstacle
+}
 
     // Function to handle player jump
     function jump() {
