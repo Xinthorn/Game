@@ -138,15 +138,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to update progress bar
     function updateProgressBar() {
-        progress += 12.5; // Increment progress by 12.5% every 1 second (100% in 8 seconds)
-        progressBar.style.width = `${progress}%`;
-        if (progress >= 100) {
-            clearInterval(progressInterval); // Stop updating progress bar
-            progress = 0; // Reset progress
-            level++; // Increment level
-            createObstacle(); // Create new obstacle for the next level
-        }
+    progress += 12.5; // Increment progress by 12.5% every 1 second (100% in 8 seconds)
+    progressBar.style.width = `${progress}%`;
+    if (progress >= 100) {
+        clearInterval(progressInterval); // Stop updating progress bar
+        progress = 0; // Reset progress
+        level++; // Increment level
+        gameContainer.removeChild(obstacle); // Remove the previous obstacle
+        createObstacle(); // Create new obstacle for the next level
     }
+}
 
     // Function to check obstacle collision
     function checkObstacleCollision() {
