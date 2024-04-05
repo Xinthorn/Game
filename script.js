@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             player.classList.add("jump-animation");
             const jumpDistance = 400; // Adjust as needed
             const jumpHeight = 250; // Ensure jump height is greater than obstacle height
-            const jumpDuration = 1200; // Adjust as needed
+            const jumpDuration = 2000; // Adjust as needed
             const startTime = performance.now();
             const initialTranslateY = parseFloat(window.getComputedStyle(player).transform.split(',')[5]); // Get initial translateY value
 
