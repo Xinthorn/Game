@@ -11,6 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let progressInterval; // Interval for updating progress bar
     let progress = 0; // Progress for progress bar
     let gameStartTime; // Start time of the game
+    // Initialize progress bar at the start of the game
+    updateProgressBar();
+
+    // Store initial obstacle position
+    const initialObstaclePosition = obstacle.getBoundingClientRect();
 
     function jump() {
         if (!player.classList.contains("jump-animation")) {
@@ -116,7 +121,7 @@ function increaseGameSpeed() {
         progressInterval = setInterval(updateProgressBar, 1000); // Start updating progress bar again
 
         // Set obstacle position back to the stored position
-        obstacle.style.top = obstaclePosition.top + 'px';
+        obstacle.style.top = initialobstaclePosition.top + 'px';
     }
 }
 
