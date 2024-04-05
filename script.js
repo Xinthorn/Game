@@ -11,8 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let progressInterval; // Interval for updating progress bar
     let progress = 0; // Progress for progress bar
     let gameStartTime; // Start time of the game
-    // Initialize progress bar at the start of the game
-    updateProgressBar();
 
     // Store initial obstacle position
     const initialObstaclePosition = obstacle.getBoundingClientRect();
@@ -106,26 +104,31 @@ document.addEventListener('DOMContentLoaded', () => {
         gameContainer.appendChild(bird);
     }
 
+    function increaseGameSpeed() {
+        if (gameSpeed > 1000) { // Prevents speed from becoming too fast
+            gameSpeed -= 100; // Adjust as needed
 
-    
-function increaseGameSpeed() {
-    if (gameSpeed > 1000) { // Prevents speed from becoming too fast
-        gameSpeed -= 100; // Adjust as needed
+            // Store obstacle position
+            const obstaclePosition = obstacle.getBoundingClientRect();
 
-        // Store obstacle position
-        const obstaclePosition = obstacle.getBoundingClientRect();
+            obstacle.style.animationDuration = `${gameSpeed / 1000}s`;
+            clearInterval(progressInterval); // Stop updating progress bar
+            progress = 0; // Reset progress
+            progressInterval = setInterval(updateProgressBar, 1000); // Start updating progress bar again
 
-        obstacle.style.animationDuration = `${gameSpeed / 1000}s`;
-        clearInterval(progressInterval); // Stop updating progress bar
-        progress = 0; // Reset progress
-        progressInterval = setInterval(updateProgressBar, 1000); // Start updating progress bar again
-
-        // Set obstacle position back to the stored position
-        obstacle.style.top = initialobstaclePosition.top + 'px';
+            // Set obstacle position back to the stored position
+            obstacle.style.top = initialObstaclePosition.top + 'px';
+        }
     }
-}
 
-
+    function updateProgressBar() {
+        progress += 12.5; // Increment progress by 12.5% every 1 second (100% in 8 seconds)
+        progressBar.style.width = `${progress}%`;
+        if (progress >= 100) {
+            clearInterval(progressInterval); // Stop updating progress bar
+            progress = 0; // Reset progress
+        }
+    }
 
     function checkObstacleCollision() {
         const playerRect = player.getBoundingClientRect();
