@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function createObstacle() {
         obstacle = document.createElement('div');
         obstacle.id = 'obstacle';
-        obstacle.style.width = '50px'; // Set obstacle width
-        obstacle.style.height = '50px'; // Set obstacle height
+       // obstacle.style.width = '50px'; // Set obstacle width
+        // obstacle.style.height = '50px'; // Set obstacle height
         obstacle.style.position = 'absolute'; // Set obstacle position
         obstacle.style.bottom = '0'; // Set obstacle bottom position
         obstacle.style.left = '100px'; // Set obstacle left position (adjust as needed)
@@ -143,6 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (progress >= 100) {
             clearInterval(progressInterval); // Stop updating progress bar
             progress = 0; // Reset progress
+            level++; // Increment level
+            createObstacle(); // Create new obstacle for the next level
         }
     }
 
@@ -192,7 +194,9 @@ document.addEventListener('DOMContentLoaded', () => {
         checkObstacleCollision();
         checkCollection();
     }
-    let gameInterval = setInterval(gameLoop, 100); // Check for collisions
+
+    // Start game loop
+    let gameInterval = setInterval(gameLoop, 100);
 
     // Generate coins and birds periodically
     setInterval(increaseGameSpeed, 8000);
@@ -203,6 +207,6 @@ document.addEventListener('DOMContentLoaded', () => {
     gameStartTime = performance.now();
     progressInterval = setInterval(updateProgressBar, 1000);
 
-    // Call function to create initial obstacle
+    // Create initial obstacle
     createObstacle();
 });
