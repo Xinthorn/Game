@@ -128,7 +128,7 @@ body, html {
 
     #obstacle {
         width: 5%;
-        height: 5%; /* Adjust width of obstacle for smaller screens */
+        /* Adjust width of obstacle for smaller screens */
     }
 
     #cloud {
