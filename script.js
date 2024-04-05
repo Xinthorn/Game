@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function increaseGameSpeed() {
     if (gameSpeed > 1000) { // Prevents speed from becoming too fast
         gameSpeed -= 100; // Adjust as needed
-        
+
         // Store obstacle position
         const obstaclePosition = obstacle.getBoundingClientRect();
 
@@ -119,6 +119,7 @@ function increaseGameSpeed() {
         obstacle.style.top = obstaclePosition.top + 'px';
     }
 }
+
 
 
     function checkObstacleCollision() {
