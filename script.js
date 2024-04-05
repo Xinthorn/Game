@@ -117,8 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
             progressInterval = setInterval(updateProgressBar, 1000); // Start updating progress bar again
 
             // Set obstacle position back to the stored position
-            obstacle.style.top = obstaclePosition.top + 'px';
-            obstacle.style.left = obstaclePosition.left + 'px';
+            obstacle.style.top = initialObstaclePosition.top + 'px';
+            obstacle.style.left = initialObstaclePosition.left + 'px';
         }
     }
 
