@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Store initial obstacle position
     const initialObstaclePosition = obstacle.getBoundingClientRect();
 
-    // Function to handle player jump
     function jump() {
         if (!player.classList.contains("jump-animation")) {
             player.classList.add("jump-animation");
@@ -47,14 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('touchstart', jump);
     document.addEventListener('mousedown', jump);
 
-    // Function to create a new coin
     function createCoin() {
         const coin = document.createElement('div');
         coin.className = 'coin';
 
         // Calculate the maximum and minimum heights for the coin
         const maxCoinHeight = gameContainer.offsetHeight - jumpHeight - 30; // Lower than jump height
-        const minCoinHeight = 0;
+        const minCoinHeight = obstacle.offsetHeight + 30;
 
         // Generate a random height for the coin within the allowed range
         const coinHeight = minCoinHeight + Math.random() * (maxCoinHeight - minCoinHeight);
@@ -63,12 +61,20 @@ document.addEventListener('DOMContentLoaded', () => {
         coin.style.bottom = `${coinHeight}px`;
 
         // Add animation to move the coin across the screen
-        coin.style.animation = `moveLeft ${gameSpeed / 1000}s linear infinite`;
+        coin.style.animation = `moveRight ${gameSpeed / 1000}s linear infinite`;
+
+        // Add event listener to remove the coin after it has moved twice through the gameplay area
+        let moves = 0;
+        coin.addEventListener('animationiteration', () => {
+            moves++;
+            if (moves >= 2) {
+                gameContainer.removeChild(coin);
+            }
+        });
 
         gameContainer.appendChild(coin);
     }
 
-    // Function to create a new bird
     function createBird() {
         const bird = document.createElement('div');
         bird.className = 'bird';
@@ -84,22 +90,38 @@ document.addEventListener('DOMContentLoaded', () => {
         bird.style.bottom = `${birdHeight}px`;
 
         // Add animation to move the bird across the screen
-        bird.style.animation = `moveLeft ${gameSpeed / 1000}s linear infinite`;
+        bird.style.animation = `moveRight ${gameSpeed / 1000}s linear infinite`;
+
+        // Add event listener to remove the bird after it has moved twice through the gameplay area
+        let moves = 0;
+        bird.addEventListener('animationiteration', () => {
+            moves++;
+            if (moves >= 2) {
+                gameContainer.removeChild(bird);
+            }
+        });
 
         gameContainer.appendChild(bird);
     }
 
-    // Function to increase game speed periodically
     function increaseGameSpeed() {
         if (gameSpeed > 1000) { // Prevents speed from becoming too fast
             gameSpeed -= 100; // Adjust as needed
+
+            // Store obstacle position
+            const obstaclePosition = obstacle.getBoundingClientRect();
+
+            obstacle.style.animationDuration = `${gameSpeed / 1000}s`;
             clearInterval(progressInterval); // Stop updating progress bar
             progress = 0; // Reset progress
             progressInterval = setInterval(updateProgressBar, 1000); // Start updating progress bar again
+
+            // Set obstacle position back to the stored position
+            obstacle.style.top = obstaclePosition.top + 'px';
+            obstacle.style.left = obstaclePosition.left + 'px';
         }
     }
 
-    // Function to update progress bar
     function updateProgressBar() {
         progress += 12.5; // Increment progress by 12.5% every 1 second (100% in 8 seconds)
         progressBar.style.width = `${progress}%`;
@@ -109,17 +131,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Function to check obstacle collision
     function checkObstacleCollision() {
         const playerRect = player.getBoundingClientRect();
         const obstacleRect = obstacle.getBoundingClientRect();
+
         if (playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right &&
             playerRect.bottom > obstacleRect.top && playerRect.top < obstacleRect.bottom) {
             gameOver();
         }
     }
 
-    // Function to check collection of coins and birds
     function checkCollection() {
         const playerRect = player.getBoundingClientRect();
         document.querySelectorAll('.coin, .bird').forEach(item => {
@@ -138,28 +159,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Function to handle game over
     function gameOver() {
         clearInterval(gameInterval); // Stop the game loop
         clearInterval(progressInterval); // Stop updating progress bar
+        document.removeEventListener('touchstart', jump);
+        document.removeEventListener('mousedown', jump);
         alert(`Game Over! You collected $${coinsCollected} Cryptarios.`);
         // Reset game or reload page for simplicity
         window.location.reload();
     }
 
-    // Function to handle game loop
     function gameLoop() {
         checkObstacleCollision();
         checkCollection();
     }
+    let gameInterval = setInterval(gameLoop, 100); // Check for collisions
 
-    // Set interval for game loop to check for collisions
-    let gameInterval = setInterval(gameLoop, 100);
-
-    // Generate coins, obstacles, and birds periodically
-    setInterval(increaseGameSpeed, 8000); // Adjust speed every 8 seconds
-    setInterval(createCoin, 2000); // Adjust timing as needed for coin generation
-    setInterval(createBird, 3000); // Adjust timing as needed for bird generation
+    // Generate coins and birds periodically
+    setInterval(increaseGameSpeed, 8000);
+    setInterval(createCoin, 2000); // Adjust timing as needed
+    setInterval(createBird, 3000); // Adjust timing as needed
 
     // Start updating progress bar
     gameStartTime = performance.now();
