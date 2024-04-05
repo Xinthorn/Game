@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let jumpHeight = 400; // Adjust based on the character's jump height
     let level = 1; // Level counter
     let progressInterval; // Interval for updating progress bar
+    let progress = 0; // Progress for progress bar
 
     function jump() {
         if (!player.classList.contains("jump-animation")) {
@@ -105,22 +106,29 @@ document.addEventListener('DOMContentLoaded', () => {
             gameSpeed -= 100; // Adjust as needed
             obstacle.style.animationDuration = `${gameSpeed / 1000}s`;
             clearInterval(progressInterval); // Stop updating progress bar
-            updateProgressBar(); // Reset progress bar
-            progressInterval = setInterval(updateProgressBar, 80); // Start updating progress bar again
+            progress = 0; // Reset progress
+            progressInterval = setInterval(updateProgressBar, 1000); // Start updating progress bar again
         }
     }
     setInterval(increaseGameSpeed, 8000); // Adjust speed every 8 seconds
 
-    // Record the start time of the game
-    const gameStartTime = performance.now();
-
     // Update progress bar based on time elapsed
     function updateProgressBar() {
-        const progress = Math.min((performance.now() - gameStartTime) / 8000 * 100, 100);
+        progress += 12.5; // Increment progress by 12.5% every 1 second (100% in 8 seconds)
         progressBar.style.width = `${progress}%`;
     }
 
-    // Check if the player collects a coin or a bird
+    // Check collision with obstacle
+    function checkObstacleCollision() {
+        const playerRect = player.getBoundingClientRect();
+        const obstacleRect = obstacle.getBoundingClientRect();
+
+        if (playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right &&
+            playerRect.bottom > obstacleRect.top && playerRect.top < obstacleRect.bottom) {
+            gameOver();
+        }
+    }
+
     function checkCollection() {
         const playerRect = player.getBoundingClientRect();
         document.querySelectorAll('.coin, .bird').forEach(item => {
@@ -139,17 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Check collision with obstacle
-    function checkObstacleCollision() {
-        const playerRect = player.getBoundingClientRect();
-        const obstacleRect = obstacle.getBoundingClientRect();
-
-        if (playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right &&
-            playerRect.bottom > obstacleRect.top && playerRect.top < obstacleRect.bottom) {
-            gameOver();
-        }
-    }
-
     function gameOver() {
         clearInterval(gameInterval); // Stop the game loop
         clearInterval(progressInterval); // Stop updating progress bar
@@ -160,7 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.reload();
     }
 
-    // Main game loop
     function gameLoop() {
         checkObstacleCollision();
         checkCollection();
