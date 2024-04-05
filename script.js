@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const player = document.getElementById("player");
     const coinCounter = document.getElementById("coinCounter");
     const progressBar = document.getElementById("progressBar");
-    const obstacle = document.getElementById("obstacle");
     let coinsCollected = 0;
     let gameSpeed = 2000; // Initial speed for obstacle movement in milliseconds
     let jumpHeight = 400; // Adjust based on the character's jump height
@@ -13,7 +12,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let gameStartTime; // Start time of the game
 
     // Store initial obstacle position
-    const initialObstaclePosition = obstacle.getBoundingClientRect();
+    const obstacle = createObstacle();
+
+    function createObstacle() {
+        const obstacle = document.createElement('div');
+        obstacle.id = 'obstacle';
+        obstacle.style.width = '50px'; // Set obstacle width
+        obstacle.style.height = '50px'; // Set obstacle height
+        obstacle.style.backgroundColor = 'red'; // Set obstacle color
+        obstacle.style.position = 'absolute'; // Set obstacle position
+        obstacle.style.bottom = '0'; // Set obstacle bottom position
+        obstacle.style.left = '100px'; // Set obstacle left position (adjust as needed)
+        gameContainer.appendChild(obstacle);
+        return obstacle;
+    }
 
     function jump() {
         if (!player.classList.contains("jump-animation")) {
