@@ -110,8 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             progressInterval = setInterval(updateProgressBar, 1000); // Start updating progress bar again
         }
     }
-    setInterval(increaseGameSpeed, 8000); // Adjust speed every 8 seconds
-
+    
     function updateProgressBar() {
         progress += 12.5; // Increment progress by 12.5% every 1 second (100% in 8 seconds)
         progressBar.style.width = `${progress}%`;
@@ -166,6 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let gameInterval = setInterval(gameLoop, 100); // Check for collisions
 
     // Generate coins and birds periodically
+    setInterval(increaseGameSpeed, 8000);
     setInterval(createCoin, 2000); // Adjust timing as needed
     setInterval(createBird, 3000); // Adjust timing as needed
 
