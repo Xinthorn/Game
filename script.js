@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let gameSpeed = 2000; // Initial speed for obstacle movement in milliseconds
     let jumpHeight = 400; // Adjust based on the character's jump height
     let level = 1; // Level counter
+    let progressInterval; // Interval for updating progress bar
 
     function jump() {
         if (!player.classList.contains("jump-animation")) {
@@ -103,29 +104,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (gameSpeed > 1000) { // Prevents speed from becoming too fast
             gameSpeed -= 100; // Adjust as needed
             obstacle.style.animationDuration = `${gameSpeed / 1000}s`;
-            // Pause the game
-            clearInterval(gameInterval);
-
-            // Display level text
-            const levelText = document.createElement('div');
-            levelText.innerText = `LEVEL ${level}`;
-            levelText.classList.add('level-text');
-            gameContainer.appendChild(levelText);
-
-            // Increment level counter
-            level++;
-
-            // Resume the game after 1 second
-            setTimeout(() => {
-                gameContainer.removeChild(levelText);
-                gameInterval = setInterval(gameLoop, 100);
-            }, 1000);
+            clearInterval(progressInterval); // Stop updating progress bar
+            updateProgressBar(); // Reset progress bar
+            progressInterval = setInterval(updateProgressBar, 80); // Start updating progress bar again
         }
     }
     setInterval(increaseGameSpeed, 8000); // Adjust speed every 8 seconds
 
     // Record the start time of the game
     const gameStartTime = performance.now();
+
+    // Update progress bar based on time elapsed
+    function updateProgressBar() {
+        const progress = Math.min((performance.now() - gameStartTime) / 8000 * 100, 100);
+        progressBar.style.width = `${progress}%`;
+    }
 
     // Check if the player collects a coin or a bird
     function checkCollection() {
@@ -142,15 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     coinsCollected += 10;
                     coinCounter.innerText = `Score: $${coinsCollected}`;
                 }
-                updateProgressBar();
             }
         });
-    }
-
-    function updateProgressBar() {
-        // Assuming the goal is to fill the progress bar in 8 seconds
-        const progress = Math.min((performance.now() - gameStartTime) / 8000 * 100, 100);
-        progressBar.style.width = `${progress}%`;
     }
 
     // Check collision with obstacle
@@ -166,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function gameOver() {
         clearInterval(gameInterval); // Stop the game loop
+        clearInterval(progressInterval); // Stop updating progress bar
         document.removeEventListener('touchstart', jump);
         document.removeEventListener('mousedown', jump);
         alert(`Game Over! You collected $${coinsCollected} Cryptarios.`);
