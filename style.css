@@ -127,7 +127,7 @@ body, html {
     }
 
     #obstacle {
-        width: 5%;
+        width: 3%;
         /* Adjust width of obstacle for smaller screens */
     }
 
