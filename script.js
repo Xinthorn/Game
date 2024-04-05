@@ -111,14 +111,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    function updateProgressBar() {
-        progress += 12.5; // Increment progress by 12.5% every 1 second (100% in 8 seconds)
-        progressBar.style.width = `${progress}%`;
-        if (progress >= 100) {
-            clearInterval(progressInterval); // Stop updating progress bar
-            progress = 0; // Reset progress
-        }
+function increaseGameSpeed() {
+    if (gameSpeed > 1000) { // Prevents speed from becoming too fast
+        gameSpeed -= 100; // Adjust as needed
+        
+        // Store obstacle position
+        const obstaclePosition = obstacle.getBoundingClientRect();
+
+        obstacle.style.animationDuration = `${gameSpeed / 1000}s`;
+        clearInterval(progressInterval); // Stop updating progress bar
+        progress = 0; // Reset progress
+        progressInterval = setInterval(updateProgressBar, 1000); // Start updating progress bar again
+
+        // Set obstacle position back to the stored position
+        obstacle.style.top = obstaclePosition.top + 'px';
     }
+}
+
 
     function checkObstacleCollision() {
         const playerRect = player.getBoundingClientRect();
