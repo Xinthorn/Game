@@ -8,35 +8,33 @@ document.addEventListener('DOMContentLoaded', () => {
     let jumpHeight = 150; // Adjust based on the character's jump height
     let level = 1; // Level counter
 
-   function jump() {
-    if (!player.classList.contains("jump-animation")) {
-        player.classList.add("jump-animation");
-        const jumpDistance = 400; // Adjust as needed
-        const jumpHeight = 150; // Ensure jump height is greater than obstacle height
-        const jumpDuration = 1200; // Adjust as needed
-        const startTime = performance.now();
-        const initialTranslateY = parseFloat(window.getComputedStyle(player).transform.split(',')[5]); // Get initial translateY value
+    function jump() {
+        if (!player.classList.contains("jump-animation")) {
+            player.classList.add("jump-animation");
+            const jumpDistance = 300; // Adjust as needed
+            const jumpHeight = 150; // Ensure jump height is greater than obstacle height
+            const jumpDuration = 1000; // Adjust as needed
+            const startTime = performance.now();
+            const initialTranslateY = parseFloat(window.getComputedStyle(player).transform.split(',')[5]); // Get initial translateY value
 
-        function jumpStep(timestamp) {
-            const elapsedTime = timestamp - startTime;
-            const progress = elapsedTime / jumpDuration;
-            const translateY = Math.max(0, jumpHeight * (1 - 4 * progress) * progress); // Quadratic curve for smoother jump
+            function jumpStep(timestamp) {
+                const elapsedTime = timestamp - startTime;
+                const progress = elapsedTime / jumpDuration;
+                const translateY = Math.max(0, jumpHeight * (1 - 4 * progress) * progress); // Quadratic curve for smoother jump
 
-            player.style.transform = `translateX(${jumpDistance}px) translateY(${initialTranslateY - translateY}px)`; // Adjust initial translateY value
+                player.style.transform = `translateX(${jumpDistance}px) translateY(${initialTranslateY - translateY}px)`; // Adjust initial translateY value
 
-            if (progress < 1) {
-                requestAnimationFrame(jumpStep);
-            } else {
-                player.classList.remove("jump-animation");
-                player.style.transform = `translateX(${jumpDistance}px) translateY(${initialTranslateY}px)`; // Reset to initial position
+                if (progress < 1) {
+                    requestAnimationFrame(jumpStep);
+                } else {
+                    player.classList.remove("jump-animation");
+                    player.style.transform = `translateX(${jumpDistance}px) translateY(${initialTranslateY}px)`; // Reset to initial position
+                }
             }
+
+            requestAnimationFrame(jumpStep);
         }
-
-        requestAnimationFrame(jumpStep);
     }
-}
-
-
 
     document.addEventListener('touchstart', jump);
     document.addEventListener('mousedown', jump);
@@ -125,6 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     setInterval(increaseGameSpeed, 8000); // Adjust speed every 8 seconds
 
+    // Record the start time of the game
+    const gameStartTime = performance.now();
+
     // Check if the player collects a coin or a bird
     function checkCollection() {
         const playerRect = player.getBoundingClientRect();
@@ -146,8 +147,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateProgressBar() {
-        // Assuming a goal of collecting 100 coins for simplicity
-        const progress = Math.min(coinsCollected / 100 * 100, 100);
+        // Assuming the goal is to fill the progress bar in 8 seconds
+        const progress = Math.min((performance.now() - gameStartTime) / 8000 * 100, 100);
         progressBar.style.width = `${progress}%`;
     }
 
@@ -163,6 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function gameOver() {
+        clearInterval(gameInterval); // Stop the game loop
+        document.removeEventListener('touchstart', jump);
+        document.removeEventListener('mousedown', jump);
         alert(`Game Over! You collected $${coinsCollected} Cryptarios.`);
         // Reset game or reload page for simplicity
         window.location.reload();
