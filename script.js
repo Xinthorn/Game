@@ -5,15 +5,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressBar = document.getElementById("progressBar");
     let coinsCollected = 0;
     let gameSpeed = 2000; // Initial speed for obstacle movement in milliseconds
-    let jumpHeight = 150; // Adjust based on the character's jump height
+    // let jumpHeight = 200; // Adjust based on the character's jump height
     let level = 1; // Level counter
 
     function jump() {
         if (!player.classList.contains("jump-animation")) {
             player.classList.add("jump-animation");
-            const jumpDistance = 300; // Adjust as needed
-            const jumpHeight = 150; // Ensure jump height is greater than obstacle height
-            const jumpDuration = 1000; // Adjust as needed
+            const jumpDistance = 400; // Adjust as needed
+            const jumpHeight = 180; // Ensure jump height is greater than obstacle height
+            const jumpDuration = 1200; // Adjust as needed
             const startTime = performance.now();
             const initialTranslateY = parseFloat(window.getComputedStyle(player).transform.split(',')[5]); // Get initial translateY value
 
