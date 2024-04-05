@@ -14,12 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Store initial obstacle position
     const obstacle = createObstacle();
 
-    function createObstacle() {
+     function createObstacle() {
         const obstacle = document.createElement('div');
         obstacle.id = 'obstacle';
         obstacle.style.width = '50px'; // Set obstacle width
         obstacle.style.height = '50px'; // Set obstacle height
-        obstacle.style.backgroundColor = 'red'; // Set obstacle color
         obstacle.style.position = 'absolute'; // Set obstacle position
         obstacle.style.bottom = '0'; // Set obstacle bottom position
         obstacle.style.left = '100px'; // Set obstacle left position (adjust as needed)
