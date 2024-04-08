@@ -11,81 +11,157 @@ document.addEventListener('DOMContentLoaded', () => {
     let progress = 0; // Progress for progress bar
     let gameStartTime; // Start time of the game
     let obstacle; // Obstacle element
+    let jumpStartTime = 0; // Track when the jump starts
+    let jumping = false; // Indicates if currently jumping
+    let jumpInterval; // To manage continuous jumping
+    let obstacleCreationTimeout;
+    let activeObstacles = [];
 
-    // Function to create obstacle
+    // createObstacle();
+
     function createObstacle() {
-    const newObstacle = document.createElement('div');
-    newObstacle.id = 'obstacle';
-    newObstacle.style.width = '50px'; // Set obstacle width
-    newObstacle.style.height = '50px'; // Set obstacle height
-    newObstacle.style.position = 'absolute'; // Set obstacle position
-    newObstacle.style.bottom = '0'; // Set obstacle bottom position
-    newObstacle.style.left = '100px'; // Set obstacle left position (adjust as needed)
-    gameContainer.appendChild(newObstacle);
-    obstacle = newObstacle; // Update obstacle variable to reference the new obstacle
-}
+        if (activeObstacles.length >= 2) return; // Limit to 3 obstacles
 
-    // Function to handle player jump
-    function jump() {
-        if (!player.classList.contains("jump-animation")) {
-            player.classList.add("jump-animation");
-            const jumpDistance = 400; // Adjust as needed
-            const jumpHeight = 400; // Ensure jump height is greater than obstacle height
-            const jumpDuration = 1000; // Adjust as needed
-            const startTime = performance.now();
-            const initialTranslateY = parseFloat(window.getComputedStyle(player).transform.split(',')[5]); // Get initial translateY value
+        const newObstacle = document.createElement('div');
+        newObstacle.className = 'obstacle';
+        newObstacle.style.position = 'absolute';
+        newObstacle.style.bottom = '0';
+        newObstacle.style.left = '100%';
+        gameContainer.appendChild(newObstacle);
+        activeObstacles.push(newObstacle);
 
-            function jumpStep(timestamp) {
-                const elapsedTime = timestamp - startTime;
-                const progress = elapsedTime / jumpDuration;
-                const translateY = Math.max(0, jumpHeight * (1 - 4 * progress) * progress); // Quadratic curve for smoother jump
-
-                player.style.transform = `translateX(${jumpDistance}px) translateY(${initialTranslateY - translateY}px)`; // Adjust initial translateY value
-
-                if (progress < 1) {
-                    requestAnimationFrame(jumpStep);
-                } else {
-                    player.classList.remove("jump-animation");
-                    player.style.transform = `translateX(${jumpDistance}px) translateY(${initialTranslateY}px)`; // Reset to initial position
-                }
-            }
-
-            requestAnimationFrame(jumpStep);
-        }
-    }
-
-    // Event listeners for player jump
-    document.addEventListener('touchstart', jump);
-    document.addEventListener('mousedown', jump);
-
-    // Function to create coins
-    function createCoin() {
-        const coin = document.createElement('div');
-        coin.className = 'coin';
-
-        // Calculate the maximum and minimum heights for the coin
-        const maxCoinHeight = gameContainer.offsetHeight - jumpHeight - 30; // Lower than jump height
-        const minCoinHeight = obstacle.offsetHeight + 30;
-
-        // Generate a random height for the coin within the allowed range
-        const coinHeight = minCoinHeight + Math.random() * (maxCoinHeight - minCoinHeight);
-
-        // Set the bottom position of the coin to this calculated height
-        coin.style.bottom = `${coinHeight}px`;
-
-        // Add animation to move the coin across the screen
-        coin.style.animation = `moveRight ${gameSpeed / 1000}s linear infinite`;
-
-        // Add event listener to remove the coin after it has moved twice through the gameplay area
-        let moves = 0;
-        coin.addEventListener('animationiteration', () => {
-            moves++;
-            if (moves >= 2) {
-                gameContainer.removeChild(coin);
-            }
+        // Listen for when the obstacle goes off-screen and remove it
+        newObstacle.addEventListener('animationend', () => {
+            gameContainer.removeChild(newObstacle);
+            activeObstacles = activeObstacles.filter(obstacle => obstacle !== newObstacle);
         });
 
+        // Schedule the next obstacle creation
+        const nextCreationTime = 2000 - (level - 1) * 200; 
+        obstacleCreationTimeout = setTimeout(createObstacle, Math.max(1000, nextCreationTime));
+    }
+
+function calculateNextCreationTime() {
+    const baseTime = 2000 - (level - 1) * 200;
+    return Math.max(1000, baseTime);
+}
+	
+function showLevelUp() {
+    const levelUpMsg = document.createElement('div');
+    levelUpMsg.innerText = 'Level Up!';
+    levelUpMsg.style.position = 'absolute';
+    levelUpMsg.style.top = '50%';
+    levelUpMsg.style.left = '50%';
+    levelUpMsg.style.transform = 'translate(-50%, -50%)';
+    levelUpMsg.style.fontSize = '3em';
+    levelUpMsg.style.color = '#76b852';
+    levelUpMsg.style.zIndex = '1000'; // Ensures it's on top of other elements
+    gameContainer.appendChild(levelUpMsg);
+    
+    setTimeout(() => {
+        gameContainer.removeChild(levelUpMsg);
+    }, 2000); // Message disappears after 2 seconds
+}
+
+function startJump() {
+    if (jumping) return; // Prevent multiple jumps if already jumping
+    jumping = true;
+    let currentHeight = 0;
+    const maxJumpHeight = 300; // Maximum height the player can reach, adjust as needed
+    const jumpSpeed = 2; // How fast the player jumps up, adjust as needed
+
+    // Clear previous interval if exists
+    if (jumpInterval) clearInterval(jumpInterval);
+
+    // Start moving the player up
+    jumpInterval = setInterval(() => {
+        // If maximum height reached or jump ended, start falling
+        if (currentHeight >= maxJumpHeight) {
+            endJump(); // Call to initiate fall
+        } else {
+            currentHeight += jumpSpeed;
+            player.style.bottom = `${currentHeight}px`; // Update player position
+        }
+    }, 10); // Update position every 10 ms, adjust as needed for smoothness
+}
+
+function endJump() {
+    if (!jumping) return;
+    clearInterval(jumpInterval); // Stop moving up
+
+    // Start falling back down
+    let fallInterval = setInterval(() => {
+        if (player.style.bottom === '0px' || player.style.bottom < '0px') {
+            clearInterval(fallInterval); // Stop falling when reaching the ground
+            player.style.bottom = '0px'; // Reset to ground position
+            jumping = false; // Reset jumping state
+        } else {
+            let currentHeight = parseInt(player.style.bottom, 10);
+            player.style.bottom = `${currentHeight - 5}px`; // Move down, adjust speed as needed
+        }
+    }, 10); // Adjust as needed for smoothness
+}
+
+
+    // Function to handle player jump
+function performJump(jumpDuration) {
+    const minJumpHeight = 50;
+    const maxJumpHeight = window.innerHeight - player.offsetHeight; // Maximum jump height, adjust as necessary
+    // Ensuring a minimum jump height for very short taps/clicks
+    let jumpHeight = Math.max(minJumpHeight, jumpDuration * 0.3);
+    // Capping the jump height at the maximum allowed height
+    jumpHeight = Math.min(jumpHeight, maxJumpHeight);
+    console.log(`Jump Duration: ${jumpDuration}, Calculated Jump Height: ${jumpHeight}`); // Debugging
+    if (!player.classList.contains("jump-animation")) {
+        player.classList.add("jump-animation");
+        
+        let start = null;
+        function step(timestamp) {
+            if (!start) start = timestamp;
+            const progress = Math.min((timestamp - start) / 800, 1); // Ensure the jump lasts no longer than 800ms, adjust as needed
+            const height = (1 - Math.abs(progress - 0.5) * 2) * jumpHeight; // Creates a parabolic trajectory
+
+            player.style.bottom = height + 'px'; // Move the player up
+
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            } else {
+                player.classList.remove("jump-animation");
+                player.style.bottom = ''; // Reset player position
+            }
+        }
+
+        requestAnimationFrame(step);
+    }
+}
+
+// Event listeners for mouse
+document.addEventListener('mousedown', startJump);
+document.addEventListener('mouseup', endJump);
+
+// Event listeners for touch
+document.addEventListener('touchstart', startJump);
+document.addEventListener('touchend', endJump);
+
+
+    // Function to Create Coins
+    function createCoin() {
+        // Adjusted createCoin function...
+        const coin = document.createElement('div');
+        coin.className = 'coin';
+        coin.style.position = 'absolute';
+        const maxCoinHeight = gameContainer.offsetHeight - jumpHeight - 30;
+        const minCoinHeight = 50; // Minimum height for coin placement
+        const coinHeight = Math.random() * (maxCoinHeight - minCoinHeight) + minCoinHeight;
+        coin.style.bottom = `${coinHeight}px`;
+        coin.style.left = '100%';
+        coin.style.animation = `moveRight ${gameSpeed / 1000}s linear infinite`;
         gameContainer.appendChild(coin);
+
+        // Event listener to remove coin after it moves off-screen
+        coin.addEventListener('animationiteration', () => {
+            gameContainer.removeChild(coin);
+        });
     }
 
     // Function to create birds
@@ -119,47 +195,56 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Function to increase game speed
-    function increaseGameSpeed() {
-        if (gameSpeed > 1000) { // Prevents speed from becoming too fast
-            gameSpeed -= 100; // Adjust as needed
+function increaseGameSpeed() {
+    if (gameSpeed > 1000) { // Prevents speed from becoming too fast
+        gameSpeed -= 50; // Adjust as needed
 
-            // Store obstacle position
-            const obstaclePosition = obstacle.getBoundingClientRect();
-
+        // Speed up all existing obstacles
+        const obstacles = document.querySelectorAll('.obstacle');
+        obstacles.forEach((obstacle) => {
             obstacle.style.animationDuration = `${gameSpeed / 1000}s`;
-            clearInterval(progressInterval); // Stop updating progress bar
-            progress = 0; // Reset progress
-            progressInterval = setInterval(updateProgressBar, 1000); // Start updating progress bar again
-
-            // Set obstacle position back to the stored position
-            obstacle.style.top = obstaclePosition.top + 'px';
-            obstacle.style.left = obstaclePosition.left + 'px';
-        }
-    }
-
-    // Function to update progress bar
-    function updateProgressBar() {
-    progress += 12.5; // Increment progress by 12.5% every 1 second (100% in 8 seconds)
-    progressBar.style.width = `${progress}%`;
-    if (progress >= 100) {
-        clearInterval(progressInterval); // Stop updating progress bar
-        progress = 0; // Reset progress
-        level++; // Increment level
-        gameContainer.removeChild(obstacle); // Remove the previous obstacle
-        createObstacle(); // Create new obstacle for the next level
+        });
     }
 }
 
-    // Function to check obstacle collision
-    function checkObstacleCollision() {
-        const playerRect = player.getBoundingClientRect();
+    // Adjust Game For New Level
+    function adjustGameForNewLevel() {
+        // Adjust game difficulty parameters for new level
+        const nextCreationTime = Math.max(1800, 2000 - (level - 1) * 100);
+        gameSpeed = Math.max(1800, gameSpeed - 50);
+        clearTimeout(obstacleCreationTimeout);
+        obstacleCreationTimeout = setTimeout(createObstacle, nextCreationTime + 500);
+    }
+
+    // Update Progress Bar
+    function updateProgressBar() {
+        progress += 20;
+        progressBar.style.width = `${progress}%`;
+        if (progress >= 100) {
+            level++;
+            progress = 0;
+            progressBar.style.width = '0%';
+            showLevelUp();
+            adjustGameForNewLevel();
+        }
+    }
+    setInterval(updateProgressBar, 1000); // Continuously update progress bar
+
+
+function checkObstacleCollision() {
+    const playerRect = player.getBoundingClientRect();
+    
+    // Query all elements with the class 'obstacle' and check each for collisions
+    document.querySelectorAll('.obstacle').forEach(obstacle => {
         const obstacleRect = obstacle.getBoundingClientRect();
 
         if (playerRect.right > obstacleRect.left && playerRect.left < obstacleRect.right &&
             playerRect.bottom > obstacleRect.top && playerRect.top < obstacleRect.bottom) {
             gameOver();
         }
-    }
+    });
+}
+
 
     // Function to check coin and bird collection
     function checkCollection() {
@@ -181,32 +266,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Function to end the game
-    function gameOver() {
-        clearInterval(gameInterval); // Stop the game loop
-        clearInterval(progressInterval); // Stop updating progress bar
-        document.removeEventListener('touchstart', jump);
-        document.removeEventListener('mousedown', jump);
-        alert(`Game Over! You collected $${coinsCollected} Cryptarios.`);
-        // Reset game or reload page for simplicity
-        window.location.reload();
-    }
+function gameOver() {
+    clearInterval(gameInterval); // Stop the game loop
+    // Correctly remove the event listeners for the new jump functions
+    document.removeEventListener('touchstart', startJump);
+    document.removeEventListener('touchend', endJump);
+    document.removeEventListener('mousedown', startJump);
+    document.removeEventListener('mouseup', endJump);
 
-    // Function for the game loop
-    function gameLoop() {
+    alert(`Game Over! You collected $${coinsCollected} Cryptarios.`);
+    // Reset game or reload page for simplicity
+    window.location.reload();
+}
+
+    let gameInterval = setInterval(() => {
         checkObstacleCollision();
         checkCollection();
-    }
+    }, 100);
 
-    // Start game loop
-    let gameInterval = setInterval(gameLoop, 100);
 
     // Generate coins and birds periodically
     setInterval(increaseGameSpeed, 8000);
+    setTimeout(createObstacle, 500);
     setInterval(createCoin, 2000); // Adjust timing as needed
     setInterval(createBird, 3000); // Adjust timing as needed
+   
 
     // Start updating progress bar
     gameStartTime = performance.now();
+    console.log("Setting up progressInterval");
     progressInterval = setInterval(updateProgressBar, 1000);
 
     // Create initial obstacle
