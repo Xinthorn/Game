@@ -50,10 +50,10 @@ function showLevelUp() {
     const levelUpMsg = document.createElement('div');
     levelUpMsg.innerText = 'Level Up!';
     levelUpMsg.style.position = 'absolute';
-    levelUpMsg.style.top = '50%';
+    levelUpMsg.style.top = '20%';
     levelUpMsg.style.left = '50%';
     levelUpMsg.style.transform = 'translate(-50%, -50%)';
-    levelUpMsg.style.fontSize = '3em';
+    levelUpMsg.style.fontSize = '2em';
     levelUpMsg.style.color = '#76b852';
     levelUpMsg.style.zIndex = '1000'; // Ensures it's on top of other elements
     gameContainer.appendChild(levelUpMsg);
