@@ -127,7 +127,7 @@ body, html {
         height: auto;
     }
 
-    #obstacle {
+    .obstacle {
         width: 3%;
         /* Adjust width of obstacle for smaller screens */
     }
@@ -137,10 +137,10 @@ body, html {
     }
 
     .coin {
-        width: 15%; /* Adjust width of coin for smaller screens */
+        width: 8%; /* Adjust width of coin for smaller screens */
     }
 
     .bird {
-        width: 18%; /* Adjust width of bird for smaller screens */
+        width: 10%; /* Adjust width of bird for smaller screens */
     }
 }
