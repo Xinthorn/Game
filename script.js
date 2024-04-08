@@ -145,25 +145,32 @@ document.addEventListener('touchend', endJump);
 
 
     // Function to Create Coins
-    function createCoin() {
-        // Adjusted createCoin function...
-        const coin = document.createElement('div');
-        coin.className = 'coin';
-        coin.style.position = 'absolute';
-	const gameContainerHeight = gameContainer.offsetHeight;
-        const maxCoinHeight = gameContainer.offsetHeight - jumpHeight - 30;
-        const minCoinHeight = 50; // Minimum height for coin placement
-        const coinHeight = Math.random() * (maxCoinHeight - minCoinHeight) + minCoinHeight;
-        coin.style.bottom = `${coinHeight}px`;
-        coin.style.left = '100%';
-        coin.style.animation = `moveRight ${gameSpeed / 1000}s linear infinite`;
-        gameContainer.appendChild(coin);
+function createCoin() {
+    const coin = document.createElement('div');
+    coin.className = 'coin';
+    coin.style.position = 'absolute';
 
-        // Event listener to remove coin after it moves off-screen
-        coin.addEventListener('animationiteration', () => {
-            gameContainer.removeChild(coin);
-        });
-    }
+    // Use gameContainer's height to dynamically adjust coin spawn height
+    const gameContainerHeight = gameContainer.offsetHeight;
+
+    // Dynamically adjust min and max coin height based on container's height
+    const minCoinHeight = gameContainerHeight * 0.2; // for example, 10% from the bottom
+    const maxCoinHeight = gameContainerHeight * 0.8; // up to 60% of the container height
+
+    // Calculate random coin height within the new dynamic range
+    const coinHeight = Math.random() * (maxCoinHeight - minCoinHeight) + minCoinHeight;
+    coin.style.bottom = `${coinHeight}px`;
+    coin.style.left = '100%'; // Starts off-screen to the right
+    coin.style.animation = `moveRight ${gameSpeed / 1000}s linear infinite`;
+
+    gameContainer.appendChild(coin);
+
+    // Remove coin after it moves off-screen
+    coin.addEventListener('animationiteration', () => {
+        gameContainer.removeChild(coin);
+    });
+}
+
 
     // Function to create birds
     function createBird() {
