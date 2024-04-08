@@ -150,6 +150,7 @@ document.addEventListener('touchend', endJump);
         const coin = document.createElement('div');
         coin.className = 'coin';
         coin.style.position = 'absolute';
+	const gameContainerHeight = gameContainer.offsetHeight;
         const maxCoinHeight = gameContainer.offsetHeight - jumpHeight - 30;
         const minCoinHeight = 50; // Minimum height for coin placement
         const coinHeight = Math.random() * (maxCoinHeight - minCoinHeight) + minCoinHeight;
