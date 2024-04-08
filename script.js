@@ -50,17 +50,17 @@ function showLevelUp() {
     const levelUpMsg = document.createElement('div');
     levelUpMsg.innerText = 'Level Up!';
     levelUpMsg.style.position = 'absolute';
-    levelUpMsg.style.top = '20%';
+    levelUpMsg.style.top = '10%';
     levelUpMsg.style.left = '50%';
     levelUpMsg.style.transform = 'translate(-50%, -50%)';
-    levelUpMsg.style.fontSize = '2em';
+    levelUpMsg.style.fontSize = '1em';
     levelUpMsg.style.color = '#76b852';
     levelUpMsg.style.zIndex = '1000'; // Ensures it's on top of other elements
     gameContainer.appendChild(levelUpMsg);
     
     setTimeout(() => {
         gameContainer.removeChild(levelUpMsg);
-    }, 2000); // Message disappears after 2 seconds
+    }, 1000); // Message disappears after 1 second
 }
 
 function startJump() {
@@ -176,13 +176,13 @@ function createCoin() {
     function createBird() {
         const bird = document.createElement('div');
         bird.className = 'bird';
-
+        const gameContainerHeight = gameContainer.offsetHeight;
         // Calculate the maximum and minimum heights for the bird
-        const maxBirdHeight = gameContainer.offsetHeight - jumpHeight - 30; // Lower than jump height
-        const minBirdHeight = 150; // Higher than ground level
+        const maxBirdHeight = gameContainerHeight * 0.9;
+        const minBirdHeight = gameContainerHeight * 0.4;
 
         // Generate a random height for the bird within the allowed range
-        const birdHeight = minBirdHeight + Math.random() * (maxBirdHeight - minBirdHeight);
+        const birdHeight = Math.random() * (maxBirdHeight - minBirdHeight) + minBirdHeight;
 
         // Set the bottom position of the bird to this calculated height
         bird.style.bottom = `${birdHeight}px`;
